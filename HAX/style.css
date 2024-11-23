@@ -1,0 +1,130 @@
+body {
+    background-color: #222;
+    color: #eee;
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    text-align: center;
+}
+
+.logo {
+    margin-bottom: 10px;
+    
+}
+
+.logo svg {
+    fill: white;
+}
+
+.text {
+    margin-bottom: 30px;
+    font-size: 16px;
+}
+
+.forms {
+    display: flex;
+    flex-direction: column; /* Теперь элементы расположены вертикально */
+    align-items: center; /* Выравнивание по центру по горизонтали */
+    width: 300px; /* Ширина блока формы */
+    margin: 0 auto; /* Центрирование блока формы */
+}
+
+.form input, .form button {
+    width: 100%; /* Поля ввода и кнопка занимают всю ширину блока */
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #333;
+    color: #eee;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box; /* Учитываем padding в ширину элемента */
+}
+
+.button a {
+  width: 100%; /* Поля ввода и кнопка занимают всю ширину блока */
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #333;
+  color: #eee;
+  border: none;
+  border-radius: 5px;
+  box-sizing: border-box; /* Учитываем padding в ширину элемента */
+}
+
+.form button {
+    cursor: pointer;
+}
+
+.form a {
+    display: block;
+    font-size: 12px;
+    margin-top: 10px;
+    color: #888;
+    text-decoration: none;
+    text-align: center;
+}
+*{box-sizing: border-box;}
+
+html,
+body {
+  margin: 0 auto;
+  height: 100%;
+}
+
+/* @mixin backlight($x, $y, $spread, $size, $colorA, $colorB, $duration) {
+  &:after {
+    position: absolute;
+    content: "";
+    top: $y;
+    left: $x;
+    right: 0;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    transform: scale($size);
+    -webkit-filter: blur($spread);
+    -moz-filter: blur($spread);
+    -ms-filter: blur($spread);
+    filter: blur($spread);
+    background: linear-gradient(270deg, $colorA, $colorB);
+    background-size: 200% 200%;
+    animation: animateGlow $duration ease infinite;
+    
+    @keyframes animateGlow {
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+  }
+}
+
+div {
+  position: relative;
+  width: 30vw;
+  height: 30vw;
+  line-height: 30vw;
+  text-align: center;
+  color: #252B37;
+  background-color: #151823;
+  animation: textColor 10s ease infinite;
+  @include backlight(0, 5vw, 5vw, 0.75, #0fffc1, #7e0fff, 10s);
+    
+  @keyframes textColor {
+    0% {
+      color: #7e0fff;
+    }
+    50% {
+      color: #0fffc1;
+    }
+    100% {
+      color: #7e0fff;
+    }
+  }
+} */

@@ -1,5 +1,8 @@
 import sqlite3
-from tkinter import *
+#from tkinter import *
+import tkinter as tk
+from tkinter import messagebox
+
 
 with sqlite3.connect('database.db') as db:
     cursor = db.cursor()
@@ -25,35 +28,122 @@ with sqlite3.connect('database.db') as db:
         address TEXT,
         `index` INTEGER
     )""")
-def login():
-    window = Tk() 
-    window.geometry('400x250')
-    login_admin = 'admin'
-    password_admin = 'admin'
-    txt = Entry(window,width=10) 
-    txt.grid(column=1, row=0)
-    input_login = input('Login: ')
-    input_password = input('Password: ')
-    if (input_login == login_admin) and (input_password == password_admin):
-        print('Вы успешно вошли в систему!')
-    else:
-        print('Данные не верные, повторите попытку или обратитесь к системному администратору')
-        return login()
-    return main_menu()
+
+class App(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("Stacked Widget Example")
+        self.geometry("1440x720")
+
+        # Container to hold all the pages
+        self.container = tk.Frame(self)
+        self.container.pack(fill="y")
+
         
-def main_menu():
-    data = ''
-    choose_db = input('1) Сотрудники\n2) Оборудование\n3) Офисы')
-    if choose_db == '1':
-        data = 'users'
-    elif choose_db == '2':
-        data = 'equipment'
-    elif choose_db == '3':
-        data = 'office'
-    else:
-        print('Неверные данные')
-        main_menu()
-    return menu_base(data)
+        
+
+        # Dictionary to hold the pages
+        self.pages = {}
+
+        # Initialize the pages
+        for PageClass in (LoginPage, HomePage):
+            page = PageClass(self.container, self)
+            self.pages[PageClass.__name__] = page
+            page.grid(row=0, column=0, sticky='nsew')
+
+        # Show the initial page
+        self.show_page("LoginPage")
+
+    def show_page(self, page_name):
+        """Bring the page with the given name to the front."""
+        page = self.pages[page_name]
+        page.tkraise()
+class LoginPage(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        self.controller = controller
+        tk.Frame(self).pack(fill='y', expand=True,pady=100)
+
+        tk.Label(self, text='Логин:').pack(pady=20,anchor='center')
+        tk.Label(self, text="Username:").pack(pady=5)
+        self.login_txt = tk.Entry(self)
+        self.login_txt.pack(pady=5)
+        
+        tk.Label(self, text="Password:").pack(pady=5)
+        self.password_txt= tk.Entry(self, show="*")
+        self.password_txt.pack(pady=5)
+
+        tk.Button(self, text="Login", command=self.login).pack(pady=20)
+    
+    def login(self):
+        input_login = self.login_txt.get()
+        input_password = self.password_txt.get()
+        if (input_login == 'admin') and (input_password == 'admin'):
+            self.controller.show_page("HomePage")
+        else:
+            messagebox.showerror("Title", "Message")
+            print('Данные не верные, повторите попытку или обратитесь к системному администратору')
+
+class HomePage(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        self.container = tk.Frame(self)
+        self.container.pack(fill="none")
+        self.controller = controller
+        tk.Button(self, text='Сотрудники',command=show_users, width=30, height=3).pack(fill='x', padx=40,pady=50, anchor='w')
+        tk.Button(self, text='Оборудование',command=show_equip, width=30, height=3).pack(fill='x', padx=40,pady=50, anchor='w')
+        tk.Button(self, text='Офис',command=show_office, width=30, height=3).pack(fill='x', padx=40,pady=50, anchor='w')
+        
+    # choose_db = input('1) Сотрудники\n2) Оборудование\n3) Офисы')
+    # if choose_db == '1':
+    #     data = 'users'
+    # elif choose_db == '2':
+    #     data = 'equipment'
+    # elif choose_db == '3':
+    #     data = 'office'
+    # else:
+    #     print('Неверные данные')
+    #     main_menu()
+def show_users(self):
+    # window = tk.Tk()
+    # window.state("zoomed")
+    listbox = tk.Listbox(self)
+    listbox.pack()
+    try:
+        dp = sqlite3.connect('database.db')
+        cursor = db.cursor()
+
+        for i in cursor.execute(f'SELECT * FROM users'):
+            listbox.insert(tk.END, i)
+            print(i)
+    except sqlite3.Error as e:
+        print('Error',e)
+    finally:
+        print('Открыта таблица сотрудников')
+
+def show_equip():
+    try:
+        dp = sqlite3.connect('database.db')
+        cursor = db.cursor()
+
+        for i in cursor.execute(f'SELECT * FROM equipment'):
+            print(i)
+    except sqlite3.Error as e:
+        print('Error',e)
+    finally:
+        print('Открыта таблица оборудования')
+    
+def show_office():
+    try:
+        dp = sqlite3.connect('database.db')
+        cursor = db.cursor()
+
+        for i in cursor.execute(f'SELECT * FROM office'):
+            print(i)
+    except sqlite3.Error as e:
+        print('Error',e)
+    finally:
+        print('Открыта таблица офисов')
 
 def menu_base(data):
     try:
@@ -163,4 +253,8 @@ def delete(data):
         if db:
             db.close()
             print("Соединение с SQLite закрыто")
-login()
+            
+if __name__ == "__main__":
+    app = App()
+    app.mainloop()
+
